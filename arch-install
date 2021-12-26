@@ -1,0 +1,103 @@
+#!/bin/bash
+
+sleep 1 && echo -e "Do not enter invalid input.\n"
+sleep 1 && echo -e "This script does not cater for dickheads.\n\n\n"
+sleep 2 && read -p "Proceed? [Y/n] " prompt
+if ! [[ "$prompt" = "y" || "$prompt" = "Y" || -z "$prompt" ]]; then
+    exit 1
+fi
+
+ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+hwclock --systohc
+
+sed -i 's/#en_GB\./en_GB\./' /etc/locale.gen
+locale-gen
+
+echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
+echo -e "KEYMAP=uk\n#FONT=Tamsyn10x20r" >> /etc/vconsole.conf
+
+read -p "Enter the hostname: " answer
+[ -z "$answer" ] && echo "invalid...aborting" && exit 1
+echo "$answer" >> /etc/hostname
+echo -e "127.0.0.1\tlocalhost\n::1\t\tlocalhost\n127.0.1.1\t$answer.localdomain\t$answer" >> /etc/hosts
+
+echo "Set the root password..."
+passwd
+
+#pacman-key --populate archlinux
+#pacman-key --refresh-keys
+
+[ -d /sys/firmware/efi/efivars ] && system="UEFI" || system="BIOS"
+
+[ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
+pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gimp grub htop iftop kvantum-qt5 libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib pcmanfm-gtk3 pkgstats qt5-ct sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip xdg-user-dirs xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf #exfat-utils tamsyn-font ttf-iosevka-nerd xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xwininfo
+# equivalent in AUR: picom ttf-fantasque-sans-mono
+
+cpu=$(grep "^model name" /proc/cpuinfo | uniq | grep -i intel)
+[ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode   # what if other cpu?
+
+gpu=$(lspci | awk -F ": " '/VGA|3D|Display/ {print $2}' | awk '{print $1}')     # may need a 'tail -n 1' if multi monitor
+[ "$gpu" = "Advanced" ] && pacman -S --noconfirm xf86-video-amdgpu              # does this activate for AMD cpu with integrated graphics?
+[ "$gpu" = "Intel" ] && pacman -S xf86-video-intel
+[ "$gpu" = "NVIDIA" ] && [ -n "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia-lts nvidia-utils nvidia-settings
+[ "$gpu" = "NVIDIA" ] && [ -z "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+
+if [ "$system" = "BIOS" ]; then                                 # detect install drive for BIOS/MBR
+    drive=$(lsblk -lp | awk '/\/$/ {print $1}' | grep nvme)     # is install drive nvme?
+    [ -n "$drive" ] && drive=$(lsblk -lp -o NAME,MOUNTPOINT | awk '/\/$/ {print $1}' | sed 's/p.//')
+    [ -z "$drive" ] && drive=$(lsblk -lp -o NAME,MOUNTPOINT | awk '/\/$/ {print $1}' | sed 's/.$//')
+    grub-install --target=i386-pc "$drive"
+else                                                            # detect boot partition for UEFI
+    bootpart=$(lsblk | awk '/boot/ {print $NF}')                # boot partition must be /boot or inside there
+    [ -z "$bootpart" ] && echo "unable to find boot partition" && exit 1
+    grub-install --target=x86_64-efi --efi-directory="$bootpart" --bootloader-id=GRUB
+    #grub-install --target=x86_64-efi --bootloader-id=grub_uefi --recheck
+fi
+grub-mkconfig -o /boot/grub/grub.cfg
+
+timedatectl set-ntp true
+systemctl enable NetworkManager
+systemctl enable ufw
+systemctl start pkgstats.timer
+
+read -p "Enter your username: " username
+[ -z "$username" ] && echo "invalid...aborting" && exit 1
+useradd -mG wheel "$username"
+echo "Set your password..."
+passwd "$username"
+
+read -p "sudo privileges WITHOUT password prompt? [Y/n] " input
+if [[ "$input" = "y" || "$input" = "Y" || -z "$input" ]]; then
+    echo -e "#$username ALL=(ALL) ALL\n$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
+    echo "sudo without password" sleep 1
+else
+    echo -e "$username ALL=(ALL) ALL\n#$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
+    echo "sudo with password" && sleep 1
+fi
+
+# makepkg and paru cannot be run as root, hence the sudos...clunky but whatever
+sudo -u "$username" mkdir -p /home/"$username"/git-repos
+cd /home/"$username"/git-repos
+sudo -u "$username" git clone https://aur.archlinux.org/paru.git
+cd paru/
+sudo -u "$username" makepkg -si --noconfirm
+
+sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono picom-git redshift-minimal simple-mtpfs #visual-studio-code-bin
+
+echo "vm.swappiness=5" >> /etc/sysctl.d/99-swappiness.conf
+mv /etc/issue /etc/issue.bak
+mv /arch-install/issue /etc/issue
+mv /arch-install/00-keyboard.conf /etc/X11/xorg.conf.d/00-keyboard.conf
+mv /arch-install/10-mouse-accel.conf /etc/X11/xorg.conf.d/10-mouse-accel.conf
+
+echo -e "Finished installation\n\nAdd alacritty and st to /etc/bash.bashrc\n\nType the following commands:\nexit\numount -Rl /mnt\nreboot"
+
+#check for partitioning
+#https://www.youtube.com/watch?v=bnr_DhPU_JM
+
+#https://raw.githubusercontent.com/richard-archbuild/arch-dwm/main/firstrun.sh
+#https://gitlab.com/eflinux/arch-basic
+
+#check for efi install
+#https://www.youtube.com/watch?v=PQgyW10xD8s
+#https://www.youtube.com/watch?v=_axWNytXA5E
