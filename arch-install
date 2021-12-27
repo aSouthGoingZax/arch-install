@@ -30,7 +30,7 @@ passwd
 [ -d /sys/firmware/efi/efivars ] && system="UEFI" || system="BIOS"
 
 [ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
-pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gimp grub htop iftop kvantum-qt5 libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib pcmanfm-gtk3 pkgstats qt5-ct sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip xdg-user-dirs xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf #exfat-utils tamsyn-font ttf-iosevka-nerd xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xwininfo
+pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gimp grub htop iftop kvantum-qt5 libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib pcmanfm-gtk3 pkgstats qt5-ct sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip xdg-user-dirs xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf #exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xwininfo
 # equivalent in AUR: picom ttf-fantasque-sans-mono
 
 cpu=$(grep "^model name" /proc/cpuinfo | uniq | grep -i intel)
