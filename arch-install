@@ -30,17 +30,29 @@ passwd
 [ -d /sys/firmware/efi/efivars ] && system="UEFI" || system="BIOS"
 
 [ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
-pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gimp grub htop iftop kvantum libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib pcmanfm-gtk3 pkgstats qt5-ct starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip xdg-user-dirs xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf #exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xwininfo
+pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gdb gimp go grub htop iftop kvantum \
+          libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib \
+          pcmanfm-gtk3 pkgstats qt5-ct rust starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip \
+          xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf
+# maybe needed: exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
 # equivalent in AUR: picom ttf-fantasque-sans-mono
 
 cpu=$(grep "^model name" /proc/cpuinfo | uniq | grep -i intel)
-[ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode   # what if other cpu?
+[ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode    # what if other cpu?
 
-gpu=$(lspci | awk -F ": " '/VGA|3D|Display/ {print $2}' | awk '{print $1}')     # may need a 'tail -n 1' if multi monitor
-[ "$gpu" = "Advanced" ] && pacman -S --noconfirm xf86-video-amdgpu              # does this activate for AMD cpu with integrated graphics?
-[ "$gpu" = "Intel" ] && pacman -S xf86-video-intel
-[ "$gpu" = "NVIDIA" ] && [ -n "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia-lts nvidia-utils nvidia-settings
-[ "$gpu" = "NVIDIA" ] && [ -z "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+gpu=$(lspci | awk -F ": " '/VGA|3D|Display/ {print $2}' | awk '{print $1}')    # may need a 'tail -n 1' if multi monitor
+case "$gpu" in
+    "Advanced")
+        pacman -S --noconfirm xf86-video-amdgpu    # does this activate for AMD cpu with integrated graphics?
+        ;;
+    "Intel")
+        pacman -S xf86-video-intel
+        ;;
+    "NVIDIA")
+        [ -n "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia-lts nvidia-utils nvidia-settings
+        [ -z "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+        ;;
+esac
 
 if [ "$system" = "BIOS" ]; then                                 # detect install drive for BIOS/MBR
     drive=$(lsblk -lp | awk '/\/$/ {print $1}' | grep nvme)     # is install drive nvme?
