@@ -81,7 +81,7 @@ passwd "$username"
 read -p "sudo privileges WITHOUT password prompt? [Y/n] " input
 if [[ "$input" = "y" || "$input" = "Y" || -z "$input" ]]; then
     echo -e "#$username ALL=(ALL) ALL\n$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
-    echo "sudo without password" sleep 1
+    echo "sudo without password" && sleep 1
 else
     echo -e "$username ALL=(ALL) ALL\n#$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
     echo "sudo with password" && sleep 1
