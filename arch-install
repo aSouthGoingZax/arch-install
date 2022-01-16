@@ -46,7 +46,7 @@ case "$gpu" in
         pacman -S --noconfirm xf86-video-amdgpu    # does this activate for AMD cpu with integrated graphics?
         ;;
     "Intel")
-        pacman -S xf86-video-intel
+        pacman -S --noconfirm xf86-video-intel
         ;;
     "NVIDIA")
         [ -n "$(uname -r | grep lts)" ] && pacman -S --noconfirm nvidia-lts nvidia-utils nvidia-settings
@@ -94,7 +94,7 @@ sudo -u "$username" git clone https://aur.archlinux.org/paru.git
 cd paru/
 sudo -u "$username" makepkg -si --noconfirm
 
-sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono picom-git redshift-minimal simple-mtpfs #visual-studio-code-bin
+sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono picom-git redshift-minimal simple-mtpfs
 
 echo "vm.swappiness=5" >> /etc/sysctl.d/99-swappiness.conf
 mv /etc/issue /etc/issue.bak
@@ -106,9 +106,6 @@ echo -e "Finished installation\n\nAdd alacritty and st to /etc/bash.bashrc\n\nTy
 
 #check for partitioning
 #https://www.youtube.com/watch?v=bnr_DhPU_JM
-
-#https://raw.githubusercontent.com/richard-archbuild/arch-dwm/main/firstrun.sh
-#https://gitlab.com/eflinux/arch-basic
 
 #check for efi install
 #https://www.youtube.com/watch?v=PQgyW10xD8s
