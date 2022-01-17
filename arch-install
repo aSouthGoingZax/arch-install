@@ -30,12 +30,15 @@ passwd
 [ -d /sys/firmware/efi/efivars ] && system="UEFI" || system="BIOS"
 
 [ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
-pacman -S alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gdb gimp go grub htop iftop kvantum \
-          libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib \
-          pcmanfm-gtk3 pkgstats qt5-ct rust starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip \
-          xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf
-# maybe needed: exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
-# equivalent in AUR: picom ttf-fantasque-sans-mono
+pacman -S --needed \
+    alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gdb gimp go grub htop iftop kvantum \
+    libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib \
+    pcmanfm-gtk3 pkgstats qt5ct rust starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip \
+    xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf
+# maybe needed:
+#exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
+# equivalent in AUR:
+#picom ttf-fantasque-sans-mono
 
 cpu=$(grep "^model name" /proc/cpuinfo | uniq | grep -i intel)
 [ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode    # what if other cpu?
@@ -80,10 +83,10 @@ passwd "$username"
 
 read -p "sudo privileges WITHOUT password prompt? [Y/n] " input
 if [[ "$input" = "y" || "$input" = "Y" || -z "$input" ]]; then
-    echo -e "#$username ALL=(ALL) ALL\n$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
+    echo -e "$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
     echo "sudo without password" && sleep 1
 else
-    echo -e "$username ALL=(ALL) ALL\n#$username ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$username"
+    echo -e "$username ALL=(ALL) ALL\n" >> /etc/sudoers.d/"$username"
     echo "sudo with password" && sleep 1
 fi
 
