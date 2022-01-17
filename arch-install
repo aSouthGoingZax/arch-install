@@ -31,12 +31,12 @@ passwd
 
 [ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
 pacman -S --needed \
-    alacritty alsa-utils base-devel ccls cmus dash dunst fontconfig galculator gdb gimp go grub htop iftop kvantum \
-    libnotify lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib \
-    pcmanfm-gtk3 pkgstats qt5ct rust starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter vlc wget xclip \
-    xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf
+    alacritty base-devel ccls cmus dash dunst fontconfig galculator gdb gimp go grub htop iftop kvantum libnotify \
+    lxappearance-gtk3 man-db neovim networkmanager newsboat nitrogen noto-fonts-emoji p7zip pacman-contrib pcmanfm-gtk3 \
+    pipewire pipewire-alsa pipewire-pulse qt5ct rust starship sxiv ttf-cormorant ttf-ubuntu-font-family ufw unclutter \
+    vlc wget xclip xdg-utils xorg-server xorg-xset xorg-xinit xorg-xrandr youtube-dl zathura zathura-pdf-mupdf
 # maybe needed:
-#exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
+#alsa-utils exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
 # equivalent in AUR:
 #picom ttf-fantasque-sans-mono
 
