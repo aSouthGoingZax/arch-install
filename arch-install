@@ -40,7 +40,7 @@ pacman -S --needed \
 # equivalent in AUR:
 #picom ttf-fantasque-sans-mono
 
-cpu=$(grep "^model name" /proc/cpuinfo | uniq | grep -i intel)
+cpu=$(grep -m 1 "^model name" /proc/cpuinfo | grep -i intel)
 [ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode    # what if other cpu?
 
 gpu=$(lspci | awk -F ": " '/VGA|3D|Display/ {print $2}' | awk '{print $1}')    # may need a 'tail -n 1' if multi monitor
