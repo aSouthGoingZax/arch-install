@@ -101,7 +101,7 @@ sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono picom-gi
 
 #cd /home/"$username"
 sudo -u "$username" git clone --bare https://github.com/aSouthGoingZax/dotfiles.git /home/"$username"/.dotfiles
-sudo -u "$username" git --git-dir=/home/"$username"/.dotfiles/ --work-tree=/home/"$username" checkout
+sudo -u "$username" git --git-dir=/home/"$username"/.dotfiles/ --work-tree=/home/"$username" -f checkout
 
 echo "vm.swappiness=5" >> /etc/sysctl.d/99-swappiness.conf
 mv /etc/issue /etc/issue.bak
