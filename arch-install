@@ -59,6 +59,7 @@ pacman -S --needed \
     p7zip
     pacman-contrib
     pcmanfm-gtk3
+    picom
     pipewire
     pipewire-alsa
     pipewire-pulse
@@ -83,9 +84,9 @@ pacman -S --needed \
     zathura
     zathura-pdf-mupdf
 # maybe needed:
-#alsa-utils exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
+#alsa-utils exfatprogs exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
 # equivalent in AUR:
-#picom ttf-fantasque-sans-mono
+#ttf-fantasque-sans-mono
 
 cpu=$(grep -m 1 "^model name" /proc/cpuinfo | grep -i intel)
 [ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode    # what if other cpu?
@@ -144,7 +145,7 @@ sudo -u "$username" git clone https://aur.archlinux.org/paru.git
 cd paru/
 sudo -u "$username" makepkg -si --noconfirm
 
-sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono picom-git redshift-minimal simple-mtpfs
+sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono redshift-minimal simple-mtpfs
 
 #cd /home/"$username"
 sudo -u "$username" git clone --bare https://github.com/aSouthGoingZax/dotfiles.git /home/"$username"/.dotfiles
