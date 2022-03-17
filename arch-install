@@ -49,6 +49,7 @@ pacman -S --needed \
     kvantum
     libnotify
     lxappearance-gtk3
+    maim
     man-db
     neovim
     networkmanager
