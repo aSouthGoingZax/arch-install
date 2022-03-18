@@ -34,7 +34,6 @@ pacman -S --needed \
     alacritty
     base-devel
     ccls
-    cmus
     dash
     dunst
     exiv2
@@ -51,6 +50,8 @@ pacman -S --needed \
     lxappearance-gtk3
     maim
     man-db
+    mpd
+    ncmpcpp
     neovim
     networkmanager
     newsboat
@@ -84,7 +85,7 @@ pacman -S --needed \
     zathura
     zathura-pdf-mupdf
 # maybe needed:
-#alsa-utils exfatprogs exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
+#alsa-utils cmus exfatprogs exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
 # equivalent in AUR:
 #ttf-fantasque-sans-mono
 
