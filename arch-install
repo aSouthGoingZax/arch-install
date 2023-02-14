@@ -31,63 +31,62 @@ passwd
 
 [ "$system" = "UEFI" ] && pacman -S --noconfirm efibootmgr #mtools dosfstools
 pacman -S --needed \
-    alacritty
-    base-devel
-    ccls
-    dash
-    dunst
-    exiv2
-    fontconfig
-    galculator
-    gdb
-    gimp
-    go
-    grub
-    htop
-    iftop
-    kvantum
-    libnotify
-    lxappearance-gtk3
-    maim
-    man-db
-    mpd
-    ncmpcpp
-    neovim
-    networkmanager
-    newsboat
-    nitrogen
-    noto-fonts-emoji
-    p7zip
-    pacman-contrib
-    pcmanfm-gtk3
-    picom
-    pipewire
-    pipewire-alsa
-    pipewire-pulse
-    pkgstats
-    qt5ct
-    rust
-    starship
-    sxiv
-    ttf-cormorant
-    ttf-ubuntu-font-family
-    ufw
-    unclutter
-    vlc
-    wget
-    xclip
-    xdg-utils
-    xorg-server
-    xorg-xset
-    xorg-xinit
-    xorg-xrandr
-    yt-dlp
-    zathura
+    alacritty \
+    base-devel \
+    ccls \
+    dash \
+    dunst \
+    exiv2 \
+    fontconfig \
+    galculator \
+    gdb \
+    gimp \
+    go \
+    grub \
+    htop \
+    iftop \
+    kvantum \
+    libnotify \
+    lxappearance-gtk3 \
+    maim \
+    man-db \
+    mpd \
+    ncmpcpp \
+    neovim \
+    networkmanager \
+    newsboat \
+    nitrogen \
+    noto-fonts-emoji \
+    p7zip \
+    pacman-contrib \
+    pcmanfm-gtk3 \
+    picom \
+    pipewire \
+    pipewire-alsa \
+    pipewire-pulse \
+    pkgstats \
+    qt5ct \
+    rust \
+    starship \
+    sxiv \
+    ttf-cormorant \
+    ttf-fantasque-nerd \
+    ttf-ubuntu-font-family \
+    ufw \
+    unclutter \
+    vlc \
+    wget \
+    xclip \
+    xdg-utils \
+    xorg-server \
+    xorg-xset \
+    xorg-xinit \
+    xorg-xrandr \
+    yt-dlp \
+    zathura \
     zathura-pdf-mupdf
 # maybe needed:
 #alsa-utils cmus exfatprogs exfat-utils noto-fonts noto-fonts-cjk noto-fonts-extra tamsyn-font ttf-iosevka-nerd xdg-user-dirs xorg-xev xorg-xinput xorg-xkill xorg-xprop xorg-xsetroot xorg-xwininfo
-# equivalent in AUR:
-#ttf-fantasque-sans-mono
 
 cpu=$(grep -m 1 "^model name" /proc/cpuinfo | grep -i intel)
 [ -n "$cpu" ] && pacman -S --noconfirm intel-ucode || pacman -S --noconfirm amd-ucode    # what if other cpu?
@@ -146,7 +145,7 @@ sudo -u "$username" git clone https://aur.archlinux.org/paru.git
 cd paru/
 sudo -u "$username" makepkg -si --noconfirm
 
-sudo -u "$username" paru -S brave-bin lf nerd-fonts-fantasque-sans-mono redshift-minimal simple-mtpfs
+sudo -u "$username" paru -S brave-bin lf redshift-minimal simple-mtpfs
 
 #cd /home/"$username"
 sudo -u "$username" git clone --bare https://github.com/aSouthGoingZax/dotfiles.git /home/"$username"/.dotfiles
