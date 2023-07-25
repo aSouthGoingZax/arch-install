@@ -46,6 +46,7 @@ pacman -S --needed \
     htop \
     iftop \
     kvantum \
+    lf \
     libnotify \
     lxappearance-gtk3 \
     maim \
@@ -145,7 +146,7 @@ sudo -u "$username" git clone https://aur.archlinux.org/paru.git
 cd paru/
 sudo -u "$username" makepkg -si --noconfirm
 
-sudo -u "$username" paru -S brave-bin lf redshift-minimal simple-mtpfs
+sudo -u "$username" paru -S brave-bin redshift-minimal simple-mtpfs
 
 #cd /home/"$username"
 sudo -u "$username" git clone --bare https://github.com/aSouthGoingZax/dotfiles.git /home/"$username"/.dotfiles
